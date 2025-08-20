@@ -172,6 +172,223 @@ If your site isn't accessible at all:
 - Use DNS lookup tools (like `dig` or [whatsmydns.net](https://www.whatsmydns.net/)) to check propagation status
 - Temporarily access via the default URL: `https://arihant-jn-dev.github.io/copilot-test/`
 
+## Alternative Deployment Options
+
+While GitHub Pages is a great free option for static sites, there are several other deployment platforms that might better suit your needs:
+
+### 1. Netlify
+
+**Benefits**: 
+- Free tier with generous limits
+- Automatic deploys from Git
+- Custom domains with free SSL certificates (fast provisioning)
+- Serverless functions
+- Form handling
+- Deploy previews for pull requests
+
+**Detailed Steps**:
+1. Create an account at [netlify.com](https://www.netlify.com/)
+2. Click "Add new site" > "Import an existing project"
+3. Connect to GitHub and select your repository
+4. Configure build settings:
+   - Build command: (leave blank for this static site)
+   - Publish directory: `.` (root directory)
+5. Click "Deploy site"
+6. Once deployed, go to "Site settings" > "Domain management" > "Add custom domain"
+7. Enter your domain (todo.sumantpro.in)
+8. Update DNS settings as instructed by Netlify:
+   - Add a CNAME record: `todo` pointing to `[your-site-name].netlify.app`
+9. Wait for DNS propagation and SSL certificate issuance (usually minutes, not days)
+10. Manage deployments from the "Deploys" tab
+
+**Advantages over GitHub Pages**:
+- Much faster SSL certificate provisioning
+- Better build options and site management
+- More reliable deployment pipeline
+
+### 2. Vercel
+
+**Benefits**:
+- Free tier designed for frontend projects
+- Global CDN for fast delivery
+- Automatic preview deployments
+- Superior analytics dashboard
+- Serverless functions
+- Edge functions for dynamic content
+
+**Detailed Steps**:
+1. Create an account at [vercel.com](https://vercel.com/)
+2. Click "Add New..." > "Project"
+3. Connect to GitHub and select your repository
+4. Configure project:
+   - Framework Preset: Other
+   - Root Directory: ./
+   - Build Command: (leave blank)
+   - Output Directory: ./
+5. Click "Deploy"
+6. Once deployed, click "Settings" > "Domains"
+7. Add your custom domain (todo.sumantpro.in)
+8. Update DNS with:
+   - A CNAME record: `todo` pointing to `cname.vercel-dns.com`
+9. SSL is provisioned automatically (typically within minutes)
+10. Monitor performance in the Analytics dashboard
+
+**Advantages over GitHub Pages**:
+- Better performance metrics
+- Advanced deployment options
+- Faster global CDN
+
+### 3. Firebase Hosting
+
+**Benefits**:
+- Free tier with Google infrastructure
+- Fast global CDN
+- Easy integration with other Firebase services (Auth, Database)
+- Automatic SSL
+- Multiple site hosting
+- Versioned deployments with rollback
+
+**Detailed Steps**:
+1. Create a Firebase account at [firebase.google.com](https://firebase.google.com/)
+2. Create a new project
+3. Go to Hosting in the Firebase console and click "Get started"
+4. Install Firebase CLI: `npm install -g firebase-tools`
+5. Open your terminal and navigate to your project directory
+6. Log in to Firebase: `firebase login`
+7. Initialize your project: `firebase init hosting`
+   - Select your Firebase project
+   - Configure as a single-page app? No
+   - What directory should be the public directory? `.` (or use `public` and move your files there)
+   - Configure automatic builds and deploys with GitHub? No (for now)
+8. Deploy your site: `firebase deploy --only hosting`
+9. In Firebase Console, go to Hosting > Add custom domain
+10. Enter your domain and follow the verification steps
+11. Add the provided TXT records to your DNS
+12. After verification, add the required A or CNAME records
+13. Wait for DNS propagation and SSL certification
+
+**Advantages over GitHub Pages**:
+- Integration with other Firebase services
+- Better deployment management
+- Multiple site hosting under one project
+
+### 4. AWS Amplify
+
+**Benefits**:
+- Free tier with AWS infrastructure
+- CI/CD pipeline built-in
+- Atomic deployments
+- Password protection option
+- Preview deployments
+- Integration with other AWS services
+
+**Detailed Steps**:
+1. Create an AWS account at [aws.amazon.com](https://aws.amazon.com/)
+2. Go to AWS Amplify console
+3. Choose "Host a web app"
+4. Connect to GitHub and select your repository
+5. Configure build settings:
+   - App name: todo-app
+   - Environment: main
+   - Build settings: (leave defaults for static site)
+6. Review and click "Save and deploy"
+7. Once deployed, click "Domain Management" > "Add domain"
+8. Enter your domain and subdomains
+9. Add the provided CNAME records to your DNS:
+   - CNAME record: `todo` pointing to provided verification name
+   - CNAME record: `todo` pointing to the amplifyapp.com domain
+10. Verification and SSL issuance happens automatically
+11. Monitor builds in the "Hosting environments" section
+
+**Advantages over GitHub Pages**:
+- Better build pipeline
+- Branch-based deployments
+- More control over the deployment process
+
+### 5. Cloudflare Pages
+
+**Benefits**:
+- Free tier with generous build minutes
+- Global CDN with 200+ edge locations
+- Automatic Git integration
+- Fast builds and deployments
+- Analytics included
+- Advanced caching options
+
+**Detailed Steps**:
+1. Create a Cloudflare account at [cloudflare.com](https://cloudflare.com/)
+2. Go to the Pages section and click "Create a project"
+3. Connect your GitHub account and select your repository
+4. Configure build settings:
+   - Project name: todo-app
+   - Production branch: main
+   - Build command: (leave blank for static site)
+   - Build output directory: ./ (or the directory containing your files)
+5. Click "Save and Deploy"
+6. Once deployed, go to "Custom domains"
+7. Add your custom domain (todo.sumantpro.in)
+8. If your domain is on Cloudflare already, it's automatically configured
+9. If not, add the provided CNAME record to your DNS
+10. SSL is automatically provisioned
+
+**Advantages over GitHub Pages**:
+- Much faster global network
+- Better caching controls
+- Additional security features
+
+### 6. Digital Ocean App Platform
+
+**Benefits**:
+- Simple deployment process
+- Managed SSL certificates
+- Built-in monitoring
+- Horizontal scaling options
+- Global CDN
+- Starts at $5/month for basic static sites
+
+**Detailed Steps**:
+1. Create an account at [digitalocean.com](https://www.digitalocean.com/)
+2. Go to Apps > Create App
+3. Connect to GitHub and select your repository
+4. Configure your app:
+   - Type: Static Site
+   - Source Directory: ./
+   - Output Directory: ./
+   - HTTP Port: 80
+5. Select a plan (Starter at $5/mo or higher)
+6. Choose a region close to your users
+7. Click "Launch Static Site"
+8. Once deployed, go to Settings > Domains
+9. Add your custom domain
+10. Update your DNS records as instructed:
+    - CNAME record: `todo` pointing to your app's domain
+11. SSL certificate is automatically provisioned
+
+### 7. Traditional Web Hosting (GoDaddy)
+
+Since you already have a GoDaddy account:
+
+**Detailed Steps**:
+1. Log into your GoDaddy account
+2. Purchase a hosting plan if you don't have one
+3. Go to your hosting control panel
+4. Find the File Manager or FTP access
+5. Upload all your files (index.html, styles.css, script.js) to the root directory or a subdirectory
+6. If using a subdomain:
+   - Create a subdomain in your GoDaddy DNS settings
+   - Point it to your hosting package
+   - Create a subdirectory for your files if needed
+7. Configure SSL certificate:
+   - Most GoDaddy hosting plans come with SSL
+   - In your hosting control panel, find "SSL Certificates"
+   - Install or activate the certificate for your domain
+8. Test your website at your domain
+
+**When to Choose Traditional Hosting**:
+- When you need to host multiple websites
+- When you need more control over server configuration
+- When you require server-side technologies not available on static hosts
+
 ## Local Development
 
 To run this app locally:
