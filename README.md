@@ -99,12 +99,51 @@ git push origin gh-pages
 git checkout master
 ```
 
-### 4. Verify Deployment
+### 4. Verify Deployment and Fix Certificate Issues
 
 1. Wait for DNS propagation (may take up to 48 hours)
 2. Check if HTTPS is enabled in GitHub Pages settings
 3. Visit your site at the custom domain (todo.sumantpro.in)
-4. Verify that everything works as expected
+4. If you get an "ERR_CERT_COMMON_NAME_INVALID" error:
+   - First, make sure your DNS settings are correct
+   - Wait 24 hours for GitHub to provision the SSL certificate (this takes time!)
+   - Temporarily disable the "Enforce HTTPS" option in GitHub Pages settings
+   - Visit the site using HTTP first (http://todo.sumantpro.in)
+   - After GitHub provisions the certificate, re-enable "Enforce HTTPS"
+   - Clear your browser cache and try again
+5. Verify that everything works as expected
+
+## Troubleshooting
+
+### Certificate Issues (ERR_CERT_COMMON_NAME_INVALID)
+
+If you see certificate errors when accessing your custom domain:
+
+1. **Verify DNS Configuration**:
+   - For subdomain (todo.sumantpro.in): Ensure you have the correct CNAME record pointing to `arihant-jn-dev.github.io.` (with trailing dot)
+   - Double-check there are no conflicting DNS records
+
+2. **Give GitHub Time to Issue Certificate**:
+   - GitHub needs up to 24 hours to issue a certificate after DNS propagation
+   - During this time, use HTTP instead of HTTPS to access your site
+
+3. **Check GitHub Pages Settings**:
+   - Ensure your custom domain is correctly entered in Settings > Pages
+   - Try toggling "Enforce HTTPS" off and on after 24 hours
+
+4. **Clear Browser Cache**:
+   - Hard refresh (Ctrl+Shift+R or Cmd+Shift+R)
+   - Try in private/incognito mode or a different browser
+
+5. **Verify CNAME File**:
+   - Make sure your CNAME file contains exactly `todo.sumantpro.in` with no extra spaces or characters
+
+### DNS Propagation Issues
+
+If your site isn't accessible at all:
+- DNS changes can take up to 48 hours to fully propagate
+- Use DNS lookup tools (like `dig` or [whatsmydns.net](https://www.whatsmydns.net/)) to check propagation status
+- Temporarily access via the default URL: `https://arihant-jn-dev.github.io/copilot-test/`
 
 ## Local Development
 
