@@ -39,9 +39,14 @@ This app is deployed using GitHub Pages with a custom domain. Follow these steps
 git checkout -b gh-pages
 git push origin gh-pages
 ```
-3. Go to repository Settings > Pages
-4. Set Source to "Deploy from a branch" and select "gh-pages" branch
-5. Click Save
+3. Go to your repository on GitHub.com
+4. Click on "Settings" (top right)
+5. In the left sidebar, click on "Pages"
+6. Under "Source", select "Deploy from a branch" 
+7. Under "Branch", select "gh-pages" and "/(root)" folder
+8. Click "Save"
+9. Wait for the deployment to complete (may take a few minutes)
+10. You'll see a message "Your site is published at https://username.github.io/repo-name/"
 
 ### 2. Custom Domain Setup
 
@@ -78,7 +83,13 @@ todo.sumantpro.in
      todo -> arihant-jn-dev.github.io.
      ```
 
-3. Update GitHub Pages settings with the custom domain (todo.sumantpro.in)
+3. Configure GitHub Pages to use your subdomain:
+   - Go to your GitHub repository > Settings > Pages
+   - Under "Custom domain", enter `todo.sumantpro.in` 
+   - Click "Save"
+   - Initially leave the "Enforce HTTPS" checkbox unchecked
+   - GitHub will verify your DNS settings (this can take a few minutes)
+   - Once verified, your site will be available at http://todo.sumantpro.in
 
 ### 3. Update Deployment
 
@@ -99,19 +110,25 @@ git push origin gh-pages
 git checkout master
 ```
 
-### 4. Verify Deployment and Fix Certificate Issues
+### 4. Enable HTTPS and Verify Deployment
 
 1. Wait for DNS propagation (may take up to 48 hours)
-2. Check if HTTPS is enabled in GitHub Pages settings
-3. Visit your site at the custom domain (todo.sumantpro.in)
-4. If you get an "ERR_CERT_COMMON_NAME_INVALID" error:
+2. First, access your site using HTTP: http://todo.sumantpro.in
+3. After confirming the site works over HTTP, enable HTTPS:
+   - Go to GitHub repository > Settings > Pages
+   - Find your custom domain section
+   - Check the "Enforce HTTPS" checkbox
+   - If the checkbox is grayed out, it means GitHub is still provisioning your certificate
+   - Wait 24 hours and try again
+4. Once "Enforce HTTPS" is enabled, access your site using HTTPS: https://todo.sumantpro.in
+5. If you get an "ERR_CERT_COMMON_NAME_INVALID" error:
    - First, make sure your DNS settings are correct
-   - Wait 24 hours for GitHub to provision the SSL certificate (this takes time!)
+   - Wait another 24 hours for GitHub to provision the SSL certificate
    - Temporarily disable the "Enforce HTTPS" option in GitHub Pages settings
    - Visit the site using HTTP first (http://todo.sumantpro.in)
    - After GitHub provisions the certificate, re-enable "Enforce HTTPS"
    - Clear your browser cache and try again
-5. Verify that everything works as expected
+6. Verify that everything works as expected
 
 ## Troubleshooting
 
@@ -122,21 +139,31 @@ If you see certificate errors when accessing your custom domain:
 1. **Verify DNS Configuration**:
    - For subdomain (todo.sumantpro.in): Ensure you have the correct CNAME record pointing to `arihant-jn-dev.github.io.` (with trailing dot)
    - Double-check there are no conflicting DNS records
+   - Verify DNS propagation using `dig todo.sumantpro.in CNAME` or online DNS lookup tools
 
-2. **Give GitHub Time to Issue Certificate**:
+2. **GitHub Pages Certificate Process**:
    - GitHub needs up to 24 hours to issue a certificate after DNS propagation
    - During this time, use HTTP instead of HTTPS to access your site
+   - Check if your site appears in the list at Settings > Pages
 
-3. **Check GitHub Pages Settings**:
-   - Ensure your custom domain is correctly entered in Settings > Pages
-   - Try toggling "Enforce HTTPS" off and on after 24 hours
+3. **Step-by-step GitHub Pages HTTPS Fix**:
+   - Go to your repository on GitHub.com
+   - Click "Settings" > "Pages" in the left sidebar
+   - Under "Custom domain", verify that your domain is correctly entered
+   - Uncheck "Enforce HTTPS" if it's currently checked
+   - Save the settings
+   - Wait a few minutes, then reload the page
+   - If "Enforce HTTPS" is available (not grayed out), check it
+   - If it remains grayed out, wait 24 hours and try again
 
 4. **Clear Browser Cache**:
    - Hard refresh (Ctrl+Shift+R or Cmd+Shift+R)
    - Try in private/incognito mode or a different browser
+   - Clear your SSL state in browser settings
 
 5. **Verify CNAME File**:
    - Make sure your CNAME file contains exactly `todo.sumantpro.in` with no extra spaces or characters
+   - Ensure the CNAME file is present in both master and gh-pages branches
 
 ### DNS Propagation Issues
 
